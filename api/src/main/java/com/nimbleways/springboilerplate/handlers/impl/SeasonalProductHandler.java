@@ -7,8 +7,6 @@ import com.nimbleways.springboilerplate.services.implementations.NotificationSer
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
 @Component
 @RequiredArgsConstructor
 public class SeasonalProductHandler implements ProductHandler {
@@ -22,10 +20,10 @@ public class SeasonalProductHandler implements ProductHandler {
         if (product.isInSeason() && product.hasStock()) {
             productService.order(product);
         } else {
-            if (LocalDate.now().plusDays(product.getLeadTime()).isAfter(product.getSeasonEndDate())) {
+            if (product.hasLeadTimeBeyondSeasonEnd()) {
                 notificationService.sendOutOfStockNotification(product.getName());
                 productService.setOutOfStock(product);
-            } else if (product.getSeasonStartDate().isAfter(LocalDate.now())) {
+            } else if (product.isBeforeSeason()) {
                 notificationService.sendOutOfStockNotification(product.getName());
                 productService.save(product);
             } else {

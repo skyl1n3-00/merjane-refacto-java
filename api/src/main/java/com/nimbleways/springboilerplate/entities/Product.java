@@ -50,4 +50,12 @@ public class Product {
     public boolean isInSeason() {
         return LocalDate.now().isAfter(getSeasonStartDate()) && LocalDate.now().isBefore(getSeasonEndDate());
     }
+
+    public boolean hasLeadTimeBeyondSeasonEnd() {
+        return LocalDate.now().plusDays(getLeadTime()).isAfter(getSeasonEndDate());
+    }
+
+    public boolean isBeforeSeason() {
+        return getSeasonStartDate().isAfter(LocalDate.now());
+    }
 }
