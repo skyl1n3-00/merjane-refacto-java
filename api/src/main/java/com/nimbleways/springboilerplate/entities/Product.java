@@ -38,4 +38,16 @@ public class Product {
 
     @Column(name = "season_end_date")
     private LocalDate seasonEndDate;
+
+    public boolean hasStock() {
+        return getAvailable() > 0;
+    }
+
+    public boolean isFresh() {
+        return getExpiryDate().isAfter(LocalDate.now());
+    }
+
+    public boolean isInSeason() {
+        return LocalDate.now().isAfter(getSeasonStartDate()) && LocalDate.now().isBefore(getSeasonEndDate());
+    }
 }
